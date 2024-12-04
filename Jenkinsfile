@@ -23,10 +23,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'username', variable: 'USERNAME'),
-                                     string(credentialsId: 'password', variable: 'PASSWORD'),
-                                     string(credentialsId: 'invalid-username', variable: 'INVALID_USERNAME'),
-                                     string(credentialsId: 'invalid-password', variable: 'INVALID_PASSWORD')]) {
+                    withCredentials([string(credentialsId: 'my-username', variable: 'USERNAME'),
+                                     string(credentialsId: 'my-password', variable: 'PASSWORD'),
+                                     string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
+                                     string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
                         docker.image(DOCKER_IMAGE).inside('-p 5000:5000') {
                             sh 'robot /app/test/tests/login_test.robot'
                         }
