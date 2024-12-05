@@ -37,7 +37,6 @@ pipeline {
                             def dockerVolume = dockerWorkspace.replaceAll('^C:','/c')
                             bat """
                                 docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml
-                                docker logs ${containerId} # Tulostaa testikontin lokit
                             """
 
                         }
