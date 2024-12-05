@@ -35,7 +35,11 @@ pipeline {
                         } else {
                             def dockerWorkspace = 'C:/ProgramData/Jenkins/.jenkins/workspace/login-demo'
                             def dockerVolume = dockerWorkspace.replaceAll('^C:','/c')
-                            bat "docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot"
+                            bat """
+                                docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml
+                                docker logs ${containerId} # Tulostaa testikontin lokit
+                            """
+
                         }
                     }
                 }
@@ -44,8 +48,8 @@ pipeline {
 
         stage('Publish Results') {
             steps {
-                archiveArtifacts artifacts: '**/output.xml', allowEmptyArchive: true
-                junit '**/output.xml'
+                archiveArtifacts artifacts: 'test/test-output.xml', allowEmptyArchive: true
+                junit '**/test-output.xml'
             }
         }
     }
