@@ -16,7 +16,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build(DOCKER_IMAGE, '.')
+                    docker.build(DOCKER_IMAGE, "${env.WORKSPACE}")
+
                 }
             }
         }
@@ -28,7 +29,7 @@ pipeline {
                                      string(credentialsId: 'my-password', variable: 'PASSWORD'),
                                      string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
                                      string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
-                        docker.image(DOCKER_IMAGE).inside('-p 5000:5000') {
+                         docker.image(DOCKER_IMAGE).inside("-v ${env.WORKSPACE}:/workspace -w /workspace") {
                             sh 'robot /app/test/tests/login_test.robot'
                         }
                     }
