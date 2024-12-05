@@ -30,15 +30,19 @@ pipeline {
                                     string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
                         if (isUnix()) {
                             docker.image(DOCKER_IMAGE).inside("-v ${WORKSPACE_PATH}:/workspace -w /workspace") {
-                                sh 'robot /workspace/test/tests/login_test.robot'
+                                sh 'robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml'
                             }
                         } else {
                             def dockerWorkspace = 'C:/ProgramData/Jenkins/.jenkins/workspace/login-demo'
-                            def dockerVolume = dockerWorkspace.replaceAll('^C:','/c')
-                            bat """
-                                docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml
-                            """
+                            def dockerVolume = dockerWorkspace.replaceAll('^C:', '/c')
 
+                            def containerId = bat(script: "docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml", returnStdout: true).trim()
+
+                            // Kopioi testitulokset Jenkinsin työtilaan
+                            bat "docker cp ${containerId}:/workspace/test-output.xml ${WORKSPACE}/test-output.xml"
+
+                            // Poista kontti
+                            bat "docker rm -f ${containerId}"
                         }
                     }
                 }
@@ -47,8 +51,11 @@ pipeline {
 
         stage('Publish Results') {
             steps {
-                archiveArtifacts artifacts: 'test/test-output.xml', allowEmptyArchive: true
-                junit '**/test-output.xml'
+                // Arkistoi testitulokset
+                archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output.xml'
+                
+                // Käytä junit-raporttia
+                junit 'test-output.xml'
             }
         }
     }
