@@ -38,10 +38,10 @@ pipeline {
 
                             def containerId = bat(script: "docker run -d -t -v ${dockerVolume}:/workspace -w /workspace ${DOCKER_IMAGE} robot /workspace/test/tests/login_test.robot --output /workspace/test-output.xml", returnStdout: true).trim()
 
-                            // Kopioi testitulokset Jenkinsin työtilaan
                             bat "docker cp ${containerId}:/workspace/test-output.xml ${WORKSPACE}/test-output.xml"
+                            bat "docker cp ${containerId}:/workspace/log.html ${WORKSPACE}/log.html"
+                            bat "docker cp ${containerId}:/workspace/report.html ${WORKSPACE}/report.html"
 
-                            // Poista kontti
                             bat "docker rm -f ${containerId}"
                         }
                     }
@@ -51,10 +51,8 @@ pipeline {
 
         stage('Publish Results') {
             steps {
-                // Arkistoi testitulokset
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'test-output.xml'
                 
-                // Käytä junit-raporttia
                 junit 'test-output.xml'
             }
         }
