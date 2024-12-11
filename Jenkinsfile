@@ -29,7 +29,12 @@ pipeline {
                                      string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
                                      string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
                         sh """
-                            docker run -d -p 5000:5000 --name my-login-app ${DOCKER_IMAGE}
+                            docker run -d -p 5000:5000 --name my-login-app \
+                            -e USERNAME=${USERNAME} \
+                            -e PASSWORD=${PASSWORD} \
+                            -e INVALID_USERNAME=${INVALID_USERNAME} \
+                            -e INVALID_PASSWORD=${INVALID_PASSWORD} \
+                            ${DOCKER_IMAGE}
                             docker exec my-login-app robot /app/test/tests/login_test.robot
                         """
                     }
