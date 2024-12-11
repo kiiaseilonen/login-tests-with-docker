@@ -24,6 +24,8 @@ pipeline {
         stage('Start Docker Container') {
             steps {
                 script {
+                    sh """docker rm -f my-login-app || true
+                    """
                     sh """
                         docker run -d -p 5000:5000 --name my-login-app ${DOCKER_IMAGE}
                     """
