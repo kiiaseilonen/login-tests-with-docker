@@ -33,18 +33,22 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+       stage('Run Tests') {
+            environment {
+                USERNAME = credentials('my-username')
+                PASSWORD = credentials('my-password')
+                INVALID_USERNAME = credentials('my-invalid-username')
+                INVALID_PASSWORD = credentials('my-invalid-password')
+            }
             steps {
                 script {
-                    writeFile file: '.env', text: """
-                        USERNAME=${USERNAME}
-                        PASSWORD=${PASSWORD}
-                        INVALID_USERNAME=${INVALID_USERNAME}
-                        INVALID_PASSWORD=${INVALID_PASSWORD}
-                    """
-
+                    echo "user: $USERNAME"
+                    echo "pass: $PASSWORD"
+                    echo "invalid user: $INVALID_USERNAME"
+                    echo "invalid pass: $INVALID_PASSWORD"
+                    
                     sh """
-                        docker exec --env-file .env my-login-app robot /app/test/tests/login_test.robot
+                        docker exec my-login-app robot /app/test/tests/login_test.robot
                     """
                 }
             }
