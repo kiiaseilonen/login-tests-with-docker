@@ -34,18 +34,12 @@ pipeline {
         }
 
        stage('Run Tests') {
-            environment {
-                USERNAME = credentials('my-username')
-                PASSWORD = credentials('my-password')
-                INVALID_USERNAME = credentials('my-invalid-username')
-                INVALID_PASSWORD = credentials('my-invalid-password')
-            }
             steps {
                 script {
                     sh """
                          docker ps
                          docker exec my-login-app sh -c "curl http://localhost:5000"
-                         docker exec my-login-app sh -c "robot -v USERNAME:${USERNAME} -v PASSWORD:${PASSWORD} -v INVALID_USERNAME:${INVALID_USERNAME} -v INVALID_PASSWORD:${INVALID_PASSWORD} /app/test/tests/login_test.robot"
+                         docker exec my-login-app sh -c "robot -v USERNAME:${my-username} -v PASSWORD:${my-password} -v INVALID_USERNAME:${my-invalid-username} -v INVALID_PASSWORD:${my-invalid-password} /app/test/tests/login_test.robot"
                     """
                 }
             }
