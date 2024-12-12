@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 Library    OperatingSystem
 
 *** Variables ***
-${URL}  http://localhost:5000
+${URL}  http://my-login-app:5000
 ${BROWSER}    Firefox
 
 *** Test Cases ***
