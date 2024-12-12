@@ -1,10 +1,10 @@
-*** Settings ***
-Library    SeleniumLibrary
-Library    OperatingSystem
-
 *** Variables ***
 ${URL}  http://localhost:5000
-${BROWSER}    Firefox
+${BROWSER}  Firefox
+${USERNAME}  ${env.USERNAME}
+${PASSWORD}  ${env.PASSWORD}
+${INVALID_USERNAME}  ${env.INVALID_USERNAME}
+${INVALID_PASSWORD}  ${env.INVALID_PASSWORD}
 
 *** Test Cases ***
 Valid Login Test
