@@ -42,8 +42,6 @@ pipeline {
             steps {
                 script {
                     sh """
-                         /usr/bin/firefox --version
-                         docker ps
                          docker exec my-login-app sh -c 'curl http://localhost:5000'
                          docker exec my-login-app sh -c "export USERNAME='$J_USERNAME'"
                          docker exec my-login-app sh -c "export PASSWORD='$J_PASSWORD'"
