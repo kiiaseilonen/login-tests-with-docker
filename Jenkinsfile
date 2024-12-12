@@ -48,7 +48,7 @@ pipeline {
                     echo "invalid pass: $INVALID_PASSWORD"
                     
                     sh """
-                        docker exec my-login-app robot /app/test/tests/login_test.robot
+                         docker exec my-login-app robot -v USERNAME:${USERNAME} -v PASSWORD:${PASSWORD} -v INVALID_USERNAME:${INVALID_USERNAME} -v INVALID_PASSWORD:${INVALID_PASSWORD}
                     """
                 }
             }
