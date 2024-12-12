@@ -3,7 +3,7 @@ Library    SeleniumLibrary
 Library    OperatingSystem
 
 *** Variables ***
-${URL}  http://host.docker.internal:5000
+${URL}  http://localhost:5000
 ${BROWSER}    Firefox
 ${VALID_USERNAME}  %{USERNAME}
 ${VALID_PASSWORD}  %{PASSWORD}
