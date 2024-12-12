@@ -33,20 +33,23 @@ pipeline {
             }
         }
 
-         stage('Run Tests') {
+        stage('Run Tests') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'my-username', variable: 'USERNAME'),
-                                     string(credentialsId: 'my-password', variable: 'PASSWORD'),
-                                     string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
-                                     string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
-                         sh """
-                            docker exec my-login-app robot -v my-username:${env.USERNAME} -v my-password:${env.PASSWORD} -v my-invalid-username:${env.INVALID_USERNAME} -v my-invalid-password:${env.INVALID_PASSWORD} /app/test/tests/login_test.robot
-                            """
-                    }
+                    writeFile file: '.env', text: """
+                        USERNAME=${USERNAME}
+                        PASSWORD=${PASSWORD}
+                        INVALID_USERNAME=${INVALID_USERNAME}
+                        INVALID_PASSWORD=${INVALID_PASSWORD}
+                    """
+
+                    sh """
+                        docker exec --env-file .env my-login-app robot /app/test/tests/login_test.robot
+                    """
                 }
             }
         }
+
 
         stage('Publish Results') {
             steps {
