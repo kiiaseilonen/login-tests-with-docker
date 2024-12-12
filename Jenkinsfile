@@ -24,8 +24,10 @@ pipeline {
         stage('Start Docker Container') {
             steps {
                 script {
-                    sh 'docker rm -f my-login-app || true'
-                    sh 'docker run -d -p 5000:5000 --name my-login-app ${DOCKER_IMAGE}'
+                    sh """docker rm -f my-login-app || true
+                    """
+                    sh """ docker run -d -p 5000:5000 --name my-login-app ${DOCKER_IMAGE}
+                    """
                 }
             }
         }
@@ -39,11 +41,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh "
+                    sh """
                          docker ps
                          docker exec my-login-app sh -c 'curl http://localhost:5000'
                          docker exec my-login-app sh -c 'robot -v USERNAME:$J_USERNAME -v PASSWORD:$J_PASSWORD -v INVALID_USERNAME:$J_INVALID_USERNAME -v INVALID_PASSWORD:$J_INVALID_PASSWORD /app/test/tests/login_test.robot'
-                    "
+                    """
                 }
             }
         }
