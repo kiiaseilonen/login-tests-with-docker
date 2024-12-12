@@ -43,6 +43,7 @@ pipeline {
             steps {
                 script {
                     sh """
+                         docker ps
                          docker exec my-login-app sh -c "curl http://localhost:5000"
                          docker exec my-login-app sh -c "robot -v USERNAME:${USERNAME} -v PASSWORD:${PASSWORD} -v INVALID_USERNAME:${INVALID_USERNAME} -v INVALID_PASSWORD:${INVALID_PASSWORD} /app/test/tests/login_test.robot"
                     """
