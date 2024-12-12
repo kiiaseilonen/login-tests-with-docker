@@ -4,7 +4,7 @@ Library    OperatingSystem
 
 *** Variables ***
 ${URL}    http://localhost:5000
-${BROWSER}    Firefox
+${BROWSER}    headlessfirefox
 
 *** Test Cases ***
 Valid Login Test
