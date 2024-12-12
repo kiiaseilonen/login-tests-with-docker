@@ -10,7 +10,7 @@ COPY ./app ./app
 COPY ./app/views ./app/views
 COPY ./test ./test
 
-RUN apk add --no-cache python3 py3-pip
+RUN apk add --no-cache python3 py3-pip curl
 
 RUN pip3 install robotframework selenium robotframework-seleniumlibrary
 
