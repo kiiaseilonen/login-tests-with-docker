@@ -40,6 +40,7 @@ pipeline {
                                      string(credentialsId: 'my-password', variable: 'PASSWORD'),
                                      string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
                                      string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
+                        sh 'printenv'
                         sh """
                             docker exec my-login-app sh -c "
                             export USERNAME=${USERNAME} &&
