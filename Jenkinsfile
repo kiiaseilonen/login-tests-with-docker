@@ -42,10 +42,12 @@ pipeline {
             steps {
                 script {
                     sh """
-                         firefox --version
+                         /usr/bin/firefox --version
                          docker ps
                          docker exec my-login-app sh -c 'curl http://localhost:5000'
-                         docker exec my-login-app sh -c 'robot -v USERNAME:$J_USERNAME -v PASSWORD:$J_PASSWORD -v INVALID_USERNAME:$J_INVALID_USERNAME -v INVALID_PASSWORD:$J_INVALID_PASSWORD /app/test/tests/login_test.robot'
+                         docker exec my-login-app sh -c "export USERNAME='$J_USERNAME'"
+                         docker exec my-login-app sh -c "export PASSWORD='$J_PASSWORD'"
+                         docker exec my-login-app sh -c 'robot /app/test/tests/login_test.robot'
                     """
                 }
             }
