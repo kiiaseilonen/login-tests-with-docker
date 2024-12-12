@@ -8,7 +8,6 @@ ${BROWSER}    Firefox
 
 *** Test Cases ***
 Valid Login Test
-    [Arguments]    ${USERNAME}    ${PASSWORD}
     Open Browser  ${URL}  ${BROWSER}
     Input Text  id=username  ${USERNAME}
     Input Text  id=password  ${PASSWORD}
@@ -18,7 +17,6 @@ Valid Login Test
     Close Browser
 
 Invalid Login Test
-    [Arguments]    ${INVALID_USERNAME}    ${INVALID_PASSWORD}
     Open Browser  ${URL}  ${BROWSER}
     Input Text  id=username  ${INVALID_USERNAME}
     Input Text  id=password  ${INVALID_PASSWORD}
