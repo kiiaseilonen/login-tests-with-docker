@@ -40,7 +40,7 @@ pipeline {
                                      string(credentialsId: 'my-password', variable: 'PASSWORD'),
                                      string(credentialsId: 'my-invalid-username', variable: 'INVALID_USERNAME'),
                                      string(credentialsId: 'my-invalid-password', variable: 'INVALID_PASSWORD')]) {
-                        sh 'robot /app/test/tests/login_test.robot'
+                        sh 'docker exec my-login-app robot /app/test/tests/login_test.robot $USERNAME $PASSWORD $INVALID_USERNAME $INVALID_PASSWORD'
                     }
                 }
             }
